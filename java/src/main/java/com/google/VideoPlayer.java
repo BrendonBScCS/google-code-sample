@@ -1,7 +1,6 @@
 package com.google;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Pattern;
@@ -229,7 +228,31 @@ public class VideoPlayer {
   }
 
   public void searchVideosWithTag(String videoTag) {
-    System.out.println("searchVideosWithTag needs implementation");
+    List<Video> videos = videoLibrary.getVideosSearchTags(videoTag);
+    if (videos.isEmpty()) {
+      System.out.println("No search results for " + videoTag);
+      return;
+    }
+
+    System.out.println("Here are the results for " + videoTag + ":");
+    int i = 0;
+    for (Video video : videos) {
+      System.out.println("  " + ++i + ") " + video.getInfo());
+    }
+
+    System.out.println("Would you like to play any of the above? If yes, specify the number of the video.");
+    System.out.println("If your answer is not a valid number, we will assume it's a no.");
+
+    Scanner scanner = new Scanner(System.in);
+    String input = scanner.nextLine();
+
+    if (Pattern.matches("-?[0-9]+", input)) {
+      int index = Integer.parseInt(input);
+      if (index <= videos.size() && index > 0) {
+        Video video = videos.get(index - 1);
+        playVideo(video.getVideoId());
+      }
+    }
   }
 
   public void flagVideo(String videoId) {
