@@ -4,6 +4,7 @@ package com.google;
 class VideoPlaylist {
 
     private Video playingVideo;
+    private boolean paused;
 
     public Video getPlayingVideo() {
         return playingVideo;
@@ -11,6 +12,7 @@ class VideoPlaylist {
 
     public void setPlayingVideo(Video video) {
         playingVideo = video;
+        paused = false;
     }
 
     public boolean hasVideoPlaying() {
@@ -23,5 +25,14 @@ class VideoPlaylist {
 
     public void stopVideo() {
         setPlayingVideo(null);
+        paused = false;
+    }
+
+    public boolean isPaused() {
+        return paused;
+    }
+
+    public void setPaused(boolean paused) {
+        this.paused = paused;
     }
 }

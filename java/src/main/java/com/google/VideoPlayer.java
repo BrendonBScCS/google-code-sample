@@ -60,7 +60,15 @@ public class VideoPlayer {
   }
 
   public void pauseVideo() {
-    System.out.println("pauseVideo needs implementation");
+    Video video = videoPlaylist.getPlayingVideo();
+    if (video != null) {
+      if (videoPlaylist.isPaused()) {
+        System.out.println("Video is already paused: " + video.getTitle());
+        return;
+      }
+      System.out.println("Pausing video: " + video.getTitle());
+      videoPlaylist.setPaused(true);
+    } else System.out.println("Cannot pause video: No video is currently playing");
   }
 
   public void continueVideo() {
