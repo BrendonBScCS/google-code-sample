@@ -50,6 +50,7 @@ class Video {
 
   public void setFlagged(boolean flagged) {
     this.flagged = flagged;
+    this.flaggedReason = "";
   }
 
   public void setFlagged(boolean flagged, String flaggedReason) {
