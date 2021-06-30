@@ -44,18 +44,40 @@ class VideoLibrary {
     }
   }
 
+  /**
+   * Gets all the videos.
+   * @return a list of all the saved videos.
+   */
   List<Video> getVideos() {
     return new ArrayList<>(this.videos.values());
   }
 
+  /**
+   * Gets all the videos, ordered lexicographically on the title.
+   * @return a list of all the lexicographically-ordered videos.
+   */
   List<Video> getVideosLexicographically() {
     ArrayList<Video> array = new ArrayList<>(this.videos.values());
     array.sort(Comparator.comparing(Video::getTitle));
     return array;
   }
 
+  /**
+   * Gets a random non-flagged video.
+   * @return a non-flagged video chosen at random.
+   * @see #getNonFlaggedVideos()
+   */
   Video getRandomVideo() {
-    return this.videos.isEmpty() ? null : (Video) this.videos.values().toArray()[new Random().nextInt(this.videos.values().size())];
+    List<Video> array = getNonFlaggedVideos();
+    return array.isEmpty() ? null : array.get(new Random().nextInt(array.size()));
+  }
+
+  /**
+   * Gets all the videos that aren't flagged.
+   * @return all non-flagged videos.
+   */
+  List<Video> getNonFlaggedVideos() {
+    return new ArrayList<>(this.videos.values()).stream().filter(video -> !video.isFlagged()).collect(Collectors.toList());
   }
 
   /**
@@ -65,13 +87,29 @@ class VideoLibrary {
     return this.videos.get(videoId);
   }
 
+  /**
+   * Searches through all non-flagged videos for all that contain the
+   * specified term in the video title, returned in lexicographical order.
+   * @param term the term to search for in the title.
+   * @return lexicographically-ordered list of all non-flagged videos
+   * containing the term in the title.
+   * @see #getNonFlaggedVideos()
+   */
   List<Video> getVideosSearchTitle(String term) {
-    ArrayList<Video> array = new ArrayList<>(this.videos.values());
+    List<Video> array = getNonFlaggedVideos();
     return array.stream().filter(video -> video.getTitle().toLowerCase().contains(term)).sorted(Comparator.comparing(Video::getTitle)).collect(Collectors.toList());
   }
 
-  List<Video> getVideosSearchTags(String term) {
-    ArrayList<Video> array = new ArrayList<>(this.videos.values());
-    return array.stream().filter(video -> video.getTags().contains(term.toLowerCase())).sorted(Comparator.comparing(Video::getTitle)).collect(Collectors.toList());
+  /**
+   * Searches through all non-flagged videos for all that contain the
+   * specified tag in the video tags, returned in lexicographical order.
+   * @param videoTag the tag to search for in the tags.
+   * @return lexicographically-ordered list of all non-flagged videos
+   * containing the tag in the tags.
+   * @see #getNonFlaggedVideos()
+   */
+  List<Video> getVideosSearchTags(String videoTag) {
+    List<Video> array = getNonFlaggedVideos();
+    return array.stream().filter(video -> video.getTags().contains(videoTag.toLowerCase())).sorted(Comparator.comparing(Video::getTitle)).collect(Collectors.toList());
   }
 }

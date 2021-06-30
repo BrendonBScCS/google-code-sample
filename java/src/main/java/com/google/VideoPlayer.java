@@ -24,7 +24,9 @@ public class VideoPlayer {
   public void showAllVideos() {
     System.out.println("Here's a list of all available videos:");
     for (Video video : videoLibrary.getVideosLexicographically()) {
-      System.out.println("  " + video.getInfo());
+      StringBuilder info = new StringBuilder(video.getInfo());
+      if (video.isFlagged()) info.append(" - FLAGGED (reason: ").append(video.getFlaggedReason()).append(")");
+      System.out.println("  " + info.toString());
     }
   }
 
@@ -32,6 +34,11 @@ public class VideoPlayer {
     Video video = videoLibrary.getVideo(videoId);
     if (video == null) {
       System.out.println("Cannot play video: Video does not exist");
+      return;
+    }
+
+    if (video.isFlagged()) {
+      System.out.println("Cannot play video: Video is currently flagged (reason: " + video.getFlaggedReason() + ")");
       return;
     }
 
@@ -121,6 +128,11 @@ public class VideoPlayer {
       return;
     }
 
+    if (video.isFlagged()) {
+      System.out.println("Cannot add video to " + playlistName + ": Video is currently flagged (reason: " + video.getFlaggedReason() + ")");
+      return;
+    }
+
     if (videoPlaylist.hasVideoInPlaylist(playlistName, videoId)) {
       System.out.println("Cannot add video to " + playlistName + ": Video already added");
       return;
@@ -153,7 +165,9 @@ public class VideoPlayer {
     if (!videoIds.isEmpty()) {
       for (String videoId : videoPlaylist.getPlaylist(playlistName)) {
         Video video = videoLibrary.getVideo(videoId);
-        System.out.println("  " + video.getInfo());
+        StringBuilder info = new StringBuilder(video.getInfo());
+        if (video.isFlagged()) info.append(" - FLAGGED (reason: ").append(video.getFlaggedReason()).append(")");
+        System.out.println("  " + info.toString());
       }
     } else System.out.println("  No videos here yet");
   }
@@ -269,6 +283,10 @@ public class VideoPlayer {
     if (video.isFlagged()) {
       System.out.println("Cannot flag video: Video is already flagged");
       return;
+    }
+
+    if (videoStage.isVideoPlaying(video)) {
+      stopVideo();
     }
 
     video.setFlagged(true, reason);
