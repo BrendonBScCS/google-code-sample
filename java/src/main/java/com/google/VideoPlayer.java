@@ -256,11 +256,23 @@ public class VideoPlayer {
   }
 
   public void flagVideo(String videoId) {
-    System.out.println("flagVideo needs implementation");
+    flagVideo(videoId,"");
   }
 
   public void flagVideo(String videoId, String reason) {
-    System.out.println("flagVideo needs implementation");
+    Video video = videoLibrary.getVideo(videoId);
+    if (video == null) {
+      System.out.println("Cannot flag video: Video does not exist");
+      return;
+    }
+
+    if (video.isFlagged()) {
+      System.out.println("Cannot flag video: Video is already flagged");
+      return;
+    }
+
+    video.setFlagged(true, reason);
+    System.out.println("Successfully flagged video: " + video.getTitle() + " (reason: " + video.getFlaggedReason() + ")");
   }
 
   public void allowVideo(String videoId) {
