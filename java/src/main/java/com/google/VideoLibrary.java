@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
@@ -44,6 +45,12 @@ class VideoLibrary {
 
   List<Video> getVideos() {
     return new ArrayList<>(this.videos.values());
+  }
+
+  List<Video> getVideosLexicographically() {
+    ArrayList<Video> array = new ArrayList<>(this.videos.values());
+    array.sort(Comparator.comparing(Video::getTitle));
+    return array;
   }
 
   /**
