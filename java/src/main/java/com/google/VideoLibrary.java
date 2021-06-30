@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
@@ -51,6 +52,10 @@ class VideoLibrary {
     ArrayList<Video> array = new ArrayList<>(this.videos.values());
     array.sort(Comparator.comparing(Video::getTitle));
     return array;
+  }
+
+  Video getRandomVideo() {
+    return this.videos.isEmpty() ? null : (Video) this.videos.values().toArray()[new Random().nextInt(this.videos.values().size())];
   }
 
   /**

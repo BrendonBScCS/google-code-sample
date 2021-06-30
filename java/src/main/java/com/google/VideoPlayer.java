@@ -46,7 +46,17 @@ public class VideoPlayer {
   }
 
   public void playRandomVideo() {
-    System.out.println("playRandomVideo needs implementation");
+    Video video = videoLibrary.getRandomVideo();
+    if (video == null) {
+      System.out.println("No videos available");
+      return;
+    }
+
+    if (videoPlaylist.hasVideoPlaying())
+      System.out.println("Stopping video: " + videoPlaylist.getPlayingVideo().getTitle());
+
+    System.out.println("Playing video: " + video.getTitle());
+    videoPlaylist.setPlayingVideo(video);
   }
 
   public void pauseVideo() {
