@@ -60,20 +60,21 @@ public class VideoPlayer {
   }
 
   public void pauseVideo() {
-    Video video = videoPlaylist.getPlayingVideo();
-    if (video != null) {
+    if (videoPlaylist.hasVideoPlaying()) {
+      Video video = videoPlaylist.getPlayingVideo();
       if (videoPlaylist.isPaused()) {
         System.out.println("Video already paused: " + video.getTitle());
         return;
       }
+
       System.out.println("Pausing video: " + video.getTitle());
       videoPlaylist.setPaused(true);
     } else System.out.println("Cannot pause video: No video is currently playing");
   }
 
   public void continueVideo() {
-    Video video = videoPlaylist.getPlayingVideo();
-    if (video != null) {
+    if (videoPlaylist.hasVideoPlaying()) {
+      Video video = videoPlaylist.getPlayingVideo();
       if (videoPlaylist.isPaused()) {
         System.out.println("Continuing video: " + video.getTitle());
         videoPlaylist.setPaused(false);
@@ -82,8 +83,8 @@ public class VideoPlayer {
   }
 
   public void showPlaying() {
-    Video video = videoPlaylist.getPlayingVideo();
-    if (video != null) {
+    if (videoPlaylist.hasVideoPlaying()) {
+      Video video = videoPlaylist.getPlayingVideo();
       StringBuilder playing = new StringBuilder(video.getInfo());
       if (videoPlaylist.isPaused())
         playing.append(" - ").append("PAUSED");
