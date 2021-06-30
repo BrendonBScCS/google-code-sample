@@ -20,4 +20,8 @@ class VideoPlaylist {
     public boolean isVideoPlaying(Video video) {
         return playingVideo == video;
     }
+
+    public void stopVideo() {
+        setPlayingVideo(null);
+    }
 }
