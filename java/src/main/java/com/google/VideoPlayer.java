@@ -3,9 +3,11 @@ package com.google;
 public class VideoPlayer {
 
   private final VideoLibrary videoLibrary;
+  private final VideoPlaylist videoPlaylist;
 
   public VideoPlayer() {
     this.videoLibrary = new VideoLibrary();
+    this.videoPlaylist = new VideoPlaylist();
   }
 
   public void numberOfVideos() {
@@ -20,7 +22,17 @@ public class VideoPlayer {
   }
 
   public void playVideo(String videoId) {
-    System.out.println("playVideo needs implementation");
+    Video video = videoLibrary.getVideo(videoId);
+    if (video == null) {
+      System.out.println("Cannot play video: Video does not exist");
+      return;
+    }
+
+    if (videoPlaylist.hasVideoPlaying())
+      System.out.println("Stopping video: " + videoPlaylist.getPlayingVideo().getTitle());
+
+    System.out.println("Playing video: " + video.getTitle());
+    videoPlaylist.setPlayingVideo(video);
   }
 
   public void stopVideo() {
