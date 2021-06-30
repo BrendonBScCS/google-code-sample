@@ -187,7 +187,13 @@ public class VideoPlayer {
   }
 
   public void deletePlaylist(String playlistName) {
-    System.out.println("deletePlaylist needs implementation");
+    if (!videoPlaylist.hasPlaylist(playlistName)) {
+      System.out.println("Cannot clear playlist " + playlistName + ": Playlist does not exist");
+      return;
+    }
+
+    videoPlaylist.removePlaylist(playlistName);
+    System.out.println("Deleted playlist: " + playlistName);
   }
 
   public void searchVideos(String searchTerm) {

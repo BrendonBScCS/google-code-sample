@@ -20,6 +20,10 @@ class VideoPlaylist {
         PLAYLISTS.put(playlistName, new ArrayList<>());
     }
 
+    public void removePlaylist(String playlistName) {
+        PLAYLISTS.remove(playlistName);
+    }
+
     public boolean hasPlaylists() {
         return !PLAYLISTS.isEmpty();
     }
