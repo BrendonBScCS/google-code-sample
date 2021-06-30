@@ -188,7 +188,7 @@ public class VideoPlayer {
 
   public void deletePlaylist(String playlistName) {
     if (!videoPlaylist.hasPlaylist(playlistName)) {
-      System.out.println("Cannot clear playlist " + playlistName + ": Playlist does not exist");
+      System.out.println("Cannot delete playlist " + playlistName + ": Playlist does not exist");
       return;
     }
 
