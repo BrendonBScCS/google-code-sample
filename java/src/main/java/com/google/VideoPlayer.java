@@ -63,7 +63,7 @@ public class VideoPlayer {
     Video video = videoPlaylist.getPlayingVideo();
     if (video != null) {
       if (videoPlaylist.isPaused()) {
-        System.out.println("Video is already paused: " + video.getTitle());
+        System.out.println("Video already paused: " + video.getTitle());
         return;
       }
       System.out.println("Pausing video: " + video.getTitle());
