@@ -28,6 +28,10 @@ class VideoPlaylist {
         PLAYLISTS.get(playlistName).add(videoId);
     }
 
+    public void removeVideoFromPlaylist(String playlistName, String videoId) {
+        PLAYLISTS.get(playlistName).remove(videoId);
+    }
+
     public boolean hasVideoInPlaylist(String playlistName, String videoId) {
         return PLAYLISTS.get(playlistName).contains(videoId);
     }
