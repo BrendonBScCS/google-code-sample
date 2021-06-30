@@ -32,6 +32,10 @@ class VideoPlaylist {
         PLAYLISTS.get(playlistName).remove(videoId);
     }
 
+    public void clearPlaylist(String playlistName) {
+        PLAYLISTS.put(playlistName, new ArrayList<>());
+    }
+
     public boolean hasVideoInPlaylist(String playlistName, String videoId) {
         return PLAYLISTS.get(playlistName).contains(videoId);
     }
