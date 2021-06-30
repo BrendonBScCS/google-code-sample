@@ -30,4 +30,8 @@ class Video {
   List<String> getTags() {
     return tags;
   }
+
+  String getInfo() {
+    return getTitle() + " (" + getVideoId() + ") " + getTags().toString().replaceAll(",", "");
+  }
 }

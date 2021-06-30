@@ -17,7 +17,7 @@ public class VideoPlayer {
   public void showAllVideos() {
     System.out.println("Here's a list of all available videos:");
     for (Video video : videoLibrary.getVideosLexicographically()) {
-      System.out.println("  " + video.getTitle() + " (" + video.getVideoId() + ") " + video.getTags().toString().replaceAll(",", ""));
+      System.out.println("  " + video.getInfo());
     }
   }
 
@@ -82,7 +82,14 @@ public class VideoPlayer {
   }
 
   public void showPlaying() {
-    System.out.println("showPlaying needs implementation");
+    Video video = videoPlaylist.getPlayingVideo();
+    if (video != null) {
+      StringBuilder playing = new StringBuilder(video.getInfo());
+      if (videoPlaylist.isPaused())
+        playing.append(" - ").append("PAUSED");
+
+      System.out.println("Currently playing: " + playing.toString());
+    } else System.out.println("No video is currently playing");
   }
 
   public void createPlaylist(String playlistName) {
