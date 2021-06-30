@@ -1,34 +1,38 @@
 package com.google;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.TreeMap;
 
 /** A class used to represent a Playlist */
 class VideoPlaylist {
 
-    private final HashMap<String, ArrayList<String>> PLAYLISTS;
+    private final TreeMap<String, ArrayList<String>> PLAYLISTS;
 
     public VideoPlaylist() {
-        PLAYLISTS = new HashMap<>();
+        PLAYLISTS = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
     }
 
     boolean hasPlaylist(String playlistName) {
-        return PLAYLISTS.containsKey(clean(playlistName));
+        return PLAYLISTS.containsKey(playlistName);
     }
 
     public void addPlaylist(String playlistName) {
-        PLAYLISTS.put(clean(playlistName), new ArrayList<>());
+        PLAYLISTS.put(playlistName, new ArrayList<>());
+    }
+
+    public boolean hasPlaylists() {
+        return !PLAYLISTS.isEmpty();
     }
 
     public void addVideoToPlaylist(String playlistName, String videoId) {
-        PLAYLISTS.get(clean(playlistName)).add(videoId);
+        PLAYLISTS.get(playlistName).add(videoId);
     }
 
     public boolean hasVideoInPlaylist(String playlistName, String videoId) {
-        return PLAYLISTS.get(clean(playlistName)).contains(videoId);
+        return PLAYLISTS.get(playlistName).contains(videoId);
     }
 
-    private String clean(String playlistName) {
-        return playlistName.toLowerCase();
+    public ArrayList<String> getPlaylistNames() {
+        return new ArrayList<>(PLAYLISTS.keySet());
     }
 }
