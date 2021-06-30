@@ -35,4 +35,8 @@ class VideoPlaylist {
     public ArrayList<String> getPlaylistNames() {
         return new ArrayList<>(PLAYLISTS.keySet());
     }
+
+    public ArrayList<String> getPlaylist(String playlistName) {
+        return PLAYLISTS.get(playlistName);
+    }
 }

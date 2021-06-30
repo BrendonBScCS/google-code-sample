@@ -1,5 +1,7 @@
 package com.google;
 
+import java.util.ArrayList;
+
 public class VideoPlayer {
 
   private final VideoLibrary videoLibrary;
@@ -138,7 +140,19 @@ public class VideoPlayer {
   }
 
   public void showPlaylist(String playlistName) {
-    System.out.println("showPlaylist needs implementation");
+    if (!videoPlaylist.hasPlaylist(playlistName)) {
+      System.out.println("Cannot show playlist " + playlistName + ": Playlist does not exist");
+      return;
+    }
+
+    System.out.println("Showing playlist: " + playlistName);
+    ArrayList<String> videoIds = videoPlaylist.getPlaylist(playlistName);
+    if (!videoIds.isEmpty()) {
+      for (String videoId : videoPlaylist.getPlaylist(playlistName)) {
+        Video video = videoLibrary.getVideo(videoId);
+        System.out.println("  " + video.getInfo());
+      }
+    } else System.out.println("  No videos here yet");
   }
 
   public void removeFromPlaylist(String playlistName, String videoId) {
