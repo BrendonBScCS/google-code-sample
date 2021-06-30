@@ -3,11 +3,11 @@ package com.google;
 public class VideoPlayer {
 
   private final VideoLibrary videoLibrary;
-  private final VideoPlaylist videoPlaylist;
+  private final VideoStage videoStage;
 
   public VideoPlayer() {
     this.videoLibrary = new VideoLibrary();
-    this.videoPlaylist = new VideoPlaylist();
+    this.videoStage = new VideoStage();
   }
 
   public void numberOfVideos() {
@@ -28,21 +28,21 @@ public class VideoPlayer {
       return;
     }
 
-    if (videoPlaylist.hasVideoPlaying())
-      System.out.println("Stopping video: " + videoPlaylist.getPlayingVideo().getTitle());
+    if (videoStage.hasVideoPlaying())
+      System.out.println("Stopping video: " + videoStage.getPlayingVideo().getTitle());
 
     System.out.println("Playing video: " + video.getTitle());
-    videoPlaylist.setPlayingVideo(video);
+    videoStage.setPlayingVideo(video);
   }
 
   public void stopVideo() {
-    if (!videoPlaylist.hasVideoPlaying()) {
+    if (!videoStage.hasVideoPlaying()) {
       System.out.println("Cannot stop video: No video is currently playing");
       return;
     }
-    Video video = videoPlaylist.getPlayingVideo();
+    Video video = videoStage.getPlayingVideo();
     System.out.println("Stopping video: " + video.getTitle());
-    videoPlaylist.stopVideo();
+    videoStage.stopVideo();
   }
 
   public void playRandomVideo() {
@@ -52,41 +52,41 @@ public class VideoPlayer {
       return;
     }
 
-    if (videoPlaylist.hasVideoPlaying())
-      System.out.println("Stopping video: " + videoPlaylist.getPlayingVideo().getTitle());
+    if (videoStage.hasVideoPlaying())
+      System.out.println("Stopping video: " + videoStage.getPlayingVideo().getTitle());
 
     System.out.println("Playing video: " + video.getTitle());
-    videoPlaylist.setPlayingVideo(video);
+    videoStage.setPlayingVideo(video);
   }
 
   public void pauseVideo() {
-    if (videoPlaylist.hasVideoPlaying()) {
-      Video video = videoPlaylist.getPlayingVideo();
-      if (videoPlaylist.isPaused()) {
+    if (videoStage.hasVideoPlaying()) {
+      Video video = videoStage.getPlayingVideo();
+      if (videoStage.isPaused()) {
         System.out.println("Video already paused: " + video.getTitle());
         return;
       }
 
       System.out.println("Pausing video: " + video.getTitle());
-      videoPlaylist.setPaused(true);
+      videoStage.setPaused(true);
     } else System.out.println("Cannot pause video: No video is currently playing");
   }
 
   public void continueVideo() {
-    if (videoPlaylist.hasVideoPlaying()) {
-      Video video = videoPlaylist.getPlayingVideo();
-      if (videoPlaylist.isPaused()) {
+    if (videoStage.hasVideoPlaying()) {
+      Video video = videoStage.getPlayingVideo();
+      if (videoStage.isPaused()) {
         System.out.println("Continuing video: " + video.getTitle());
-        videoPlaylist.setPaused(false);
+        videoStage.setPaused(false);
       } else System.out.println("Cannot continue video: Video is not paused");
     } else System.out.println("Cannot continue video: No video is currently playing");
   }
 
   public void showPlaying() {
-    if (videoPlaylist.hasVideoPlaying()) {
-      Video video = videoPlaylist.getPlayingVideo();
+    if (videoStage.hasVideoPlaying()) {
+      Video video = videoStage.getPlayingVideo();
       StringBuilder playing = new StringBuilder(video.getInfo());
-      if (videoPlaylist.isPaused())
+      if (videoStage.isPaused())
         playing.append(" - ").append("PAUSED");
 
       System.out.println("Currently playing: " + playing.toString());
