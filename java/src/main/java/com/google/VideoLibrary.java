@@ -64,4 +64,9 @@ class VideoLibrary {
   Video getVideo(String videoId) {
     return this.videos.get(videoId);
   }
+
+  List<Video> getVideosSearchTitle(String term) {
+    ArrayList<Video> array = new ArrayList<>(this.videos.values());
+    return array.stream().filter(video -> video.getTitle().toLowerCase().contains(term)).sorted(Comparator.comparing(Video::getTitle)).collect(Collectors.toList());
+  }
 }
