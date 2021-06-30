@@ -4,10 +4,12 @@ public class VideoPlayer {
 
   private final VideoLibrary videoLibrary;
   private final VideoStage videoStage;
+  private final VideoPlaylist videoPlaylist;
 
   public VideoPlayer() {
     this.videoLibrary = new VideoLibrary();
     this.videoStage = new VideoStage();
+    this.videoPlaylist = new VideoPlaylist();
   }
 
   public void numberOfVideos() {
@@ -94,7 +96,12 @@ public class VideoPlayer {
   }
 
   public void createPlaylist(String playlistName) {
-    System.out.println("createPlaylist needs implementation");
+    if (videoPlaylist.hasPlaylist(playlistName)) {
+      System.out.println("Cannot create playlist: A playlist with the same name already exists");
+      return;
+    }
+    videoPlaylist.addPlaylist(playlistName);
+    System.out.println("Successfully created new playlist: " + playlistName);
   }
 
   public void addVideoToPlaylist(String playlistName, String videoId) {
