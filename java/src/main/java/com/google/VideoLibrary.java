@@ -32,7 +32,7 @@ class VideoLibrary {
         List<String> tags;
         if (split.length > 2) {
           tags = Arrays.stream(split[2].split(",")).map(String::strip).collect(
-              Collectors.toList());
+                  Collectors.toList());
         } else {
           tags = new ArrayList<>();
         }
@@ -46,6 +46,7 @@ class VideoLibrary {
 
   /**
    * Gets all the videos.
+   *
    * @return a list of all the saved videos.
    */
   List<Video> getVideos() {
@@ -54,6 +55,7 @@ class VideoLibrary {
 
   /**
    * Gets all the videos, ordered lexicographically on the title.
+   *
    * @return a list of all the lexicographically-ordered videos.
    */
   List<Video> getVideosLexicographically() {
@@ -64,6 +66,7 @@ class VideoLibrary {
 
   /**
    * Gets a random non-flagged video.
+   *
    * @return a non-flagged video chosen at random.
    * @see #getNonFlaggedVideos()
    */
@@ -74,6 +77,7 @@ class VideoLibrary {
 
   /**
    * Gets all the videos that aren't flagged.
+   *
    * @return all non-flagged videos.
    */
   List<Video> getNonFlaggedVideos() {
@@ -90,6 +94,7 @@ class VideoLibrary {
   /**
    * Searches through all non-flagged videos for all that contain the
    * specified term in the video title, returned in lexicographical order.
+   *
    * @param term the term to search for in the title.
    * @return lexicographically-ordered list of all non-flagged videos
    * containing the term in the title.
@@ -103,6 +108,7 @@ class VideoLibrary {
   /**
    * Searches through all non-flagged videos for all that contain the
    * specified tag in the video tags, returned in lexicographical order.
+   *
    * @param videoTag the tag to search for in the tags.
    * @return lexicographically-ordered list of all non-flagged videos
    * containing the tag in the tags.

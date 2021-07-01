@@ -23,11 +23,8 @@ public class VideoPlayer {
 
   public void showAllVideos() {
     System.out.println("Here's a list of all available videos:");
-    for (Video video : videoLibrary.getVideosLexicographically()) {
-      StringBuilder info = new StringBuilder(video.getInfo());
-      if (video.isFlagged()) info.append(" - FLAGGED (reason: ").append(video.getFlaggedReason()).append(")");
-      System.out.println("  " + info.toString());
-    }
+    for (Video video : videoLibrary.getVideosLexicographically())
+      System.out.println("  " + video.getInfoWithFlagged());
   }
 
   public void playVideo(String videoId) {
@@ -43,7 +40,7 @@ public class VideoPlayer {
     }
 
     if (videoStage.hasVideoPlaying())
-      System.out.println("Stopping video: " + videoStage.getPlayingVideo().getTitle());
+      stopVideo();
 
     System.out.println("Playing video: " + video.getTitle());
     videoStage.setPlayingVideo(video);
@@ -67,44 +64,56 @@ public class VideoPlayer {
     }
 
     if (videoStage.hasVideoPlaying())
-      System.out.println("Stopping video: " + videoStage.getPlayingVideo().getTitle());
+      stopVideo();
 
     System.out.println("Playing video: " + video.getTitle());
     videoStage.setPlayingVideo(video);
   }
 
   public void pauseVideo() {
-    if (videoStage.hasVideoPlaying()) {
-      Video video = videoStage.getPlayingVideo();
-      if (videoStage.isPaused()) {
-        System.out.println("Video already paused: " + video.getTitle());
-        return;
-      }
+    if (!videoStage.hasVideoPlaying()) {
+      System.out.println("Cannot pause video: No video is currently playing");
+      return;
+    }
 
-      System.out.println("Pausing video: " + video.getTitle());
-      videoStage.setPaused(true);
-    } else System.out.println("Cannot pause video: No video is currently playing");
+    Video video = videoStage.getPlayingVideo();
+    if (videoStage.isPaused()) {
+      System.out.println("Video already paused: " + video.getTitle());
+      return;
+    }
+
+    System.out.println("Pausing video: " + video.getTitle());
+    videoStage.setPaused(true);
   }
 
   public void continueVideo() {
-    if (videoStage.hasVideoPlaying()) {
-      Video video = videoStage.getPlayingVideo();
-      if (videoStage.isPaused()) {
-        System.out.println("Continuing video: " + video.getTitle());
-        videoStage.setPaused(false);
-      } else System.out.println("Cannot continue video: Video is not paused");
-    } else System.out.println("Cannot continue video: No video is currently playing");
+    if (!videoStage.hasVideoPlaying()) {
+      System.out.println("Cannot continue video: No video is currently playing");
+      return;
+    }
+
+    if (!videoStage.isPaused()) {
+      System.out.println("Cannot continue video: Video is not paused");
+      return;
+    }
+
+    Video video = videoStage.getPlayingVideo();
+    System.out.println("Continuing video: " + video.getTitle());
+    videoStage.setPaused(false);
   }
 
   public void showPlaying() {
-    if (videoStage.hasVideoPlaying()) {
-      Video video = videoStage.getPlayingVideo();
-      StringBuilder playing = new StringBuilder(video.getInfo());
-      if (videoStage.isPaused())
-        playing.append(" - ").append("PAUSED");
+    if (!videoStage.hasVideoPlaying()) {
+      System.out.println("No video is currently playing");
+      return;
+    }
 
-      System.out.println("Currently playing: " + playing.toString());
-    } else System.out.println("No video is currently playing");
+    Video video = videoStage.getPlayingVideo();
+    StringBuilder playing = new StringBuilder(video.getInfo());
+    if (videoStage.isPaused())
+      playing.append(" - ").append("PAUSED");
+
+    System.out.println("Currently playing: " + playing.toString());
   }
 
   public void createPlaylist(String playlistName) {
@@ -162,14 +171,15 @@ public class VideoPlayer {
 
     System.out.println("Showing playlist: " + playlistName);
     ArrayList<String> videoIds = videoPlaylist.getPlaylist(playlistName);
-    if (!videoIds.isEmpty()) {
-      for (String videoId : videoPlaylist.getPlaylist(playlistName)) {
-        Video video = videoLibrary.getVideo(videoId);
-        StringBuilder info = new StringBuilder(video.getInfo());
-        if (video.isFlagged()) info.append(" - FLAGGED (reason: ").append(video.getFlaggedReason()).append(")");
-        System.out.println("  " + info.toString());
-      }
-    } else System.out.println("  No videos here yet");
+    if (videoIds.isEmpty()) {
+      System.out.println("  No videos here yet");
+      return;
+    }
+
+    for (String videoId : videoPlaylist.getPlaylist(playlistName)) {
+      Video video = videoLibrary.getVideo(videoId);
+      System.out.println("  " + video.getInfoWithFlagged());
+    }
   }
 
   public void removeFromPlaylist(String playlistName, String videoId) {
@@ -213,14 +223,13 @@ public class VideoPlayer {
     System.out.println("Deleted playlist: " + playlistName);
   }
 
-  public void searchVideos(String searchTerm) {
-    List<Video> videos = videoLibrary.getVideosSearchTitle(searchTerm);
+  private void search(List<Video> videos, String term) {
     if (videos.isEmpty()) {
-      System.out.println("No search results for " + searchTerm);
+      System.out.println("No search results for " + term);
       return;
     }
 
-    System.out.println("Here are the results for " + searchTerm + ":");
+    System.out.println("Here are the results for " + term + ":");
     int i = 0;
     for (Video video : videos) {
       System.out.println("  " + ++i + ") " + video.getInfo());
@@ -239,38 +248,20 @@ public class VideoPlayer {
         playVideo(video.getVideoId());
       }
     }
+  }
+
+  public void searchVideos(String searchTerm) {
+    List<Video> videos = videoLibrary.getVideosSearchTitle(searchTerm);
+    search(videos, searchTerm);
   }
 
   public void searchVideosWithTag(String videoTag) {
     List<Video> videos = videoLibrary.getVideosSearchTags(videoTag);
-    if (videos.isEmpty()) {
-      System.out.println("No search results for " + videoTag);
-      return;
-    }
-
-    System.out.println("Here are the results for " + videoTag + ":");
-    int i = 0;
-    for (Video video : videos) {
-      System.out.println("  " + ++i + ") " + video.getInfo());
-    }
-
-    System.out.println("Would you like to play any of the above? If yes, specify the number of the video.");
-    System.out.println("If your answer is not a valid number, we will assume it's a no.");
-
-    Scanner scanner = new Scanner(System.in);
-    String input = scanner.nextLine();
-
-    if (Pattern.matches("-?[0-9]+", input)) {
-      int index = Integer.parseInt(input);
-      if (index <= videos.size() && index > 0) {
-        Video video = videos.get(index - 1);
-        playVideo(video.getVideoId());
-      }
-    }
+    search(videos, videoTag);
   }
 
   public void flagVideo(String videoId) {
-    flagVideo(videoId,"");
+    flagVideo(videoId, "");
   }
 
   public void flagVideo(String videoId, String reason) {
@@ -285,9 +276,8 @@ public class VideoPlayer {
       return;
     }
 
-    if (videoStage.isVideoPlaying(video)) {
+    if (videoStage.isVideoPlaying(video))
       stopVideo();
-    }
 
     video.setFlagged(true, reason);
     System.out.println("Successfully flagged video: " + video.getTitle() + " (reason: " + video.getFlaggedReason() + ")");
